@@ -92,7 +92,7 @@ const GamePage = () => {
   return (
     <PageBase className='game-base-container'>
       <MolkkyImg />
-      <Flex isColumn gap='medium' isSpaceBetween style={{ minHeight: 0}}>
+      <Flex isColumn gap='medium' isSpaceBetween style={{ minHeight: 0}} isFullHeight>
         <Flex className='top-texts card' isColumn isCenter isAlign>
           <span id='curr-name'>{currPlayer.name}</span>
           <span>Moyenne: {currPlayer.average}</span>

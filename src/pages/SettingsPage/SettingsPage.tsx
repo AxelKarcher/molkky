@@ -8,6 +8,9 @@ import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Flex from "../../components/Flex/Flex";
 import MolkkyImg from "../../components/MolkkyImg/MolkkyImg";
+import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
+import { arrayMoveImmutable } from 'array-move'
+import { MdOutlineDragIndicator } from "react-icons/md";
 
 const DEBUG_NAMES = ['Axel', 'Dorian', 'Simon', 'Gwen', 'Mace', 'Antoine', 'Lucas', 'Nicolas', 'Guillaume', 'Justine', 'Julien']
 
@@ -45,21 +48,32 @@ const SettingsPage = () => {
     setNames(DEBUG_NAMES)
   }
 
+  const onSortEnd = (oldIndex: number, newIndex: number) => {
+    setNames((old) => arrayMoveImmutable(old, oldIndex, newIndex))
+  }
+
   return (
     <PageBase className='settings-page-container'>
-      <Flex isColumn isSpaceBetween isFullHeight>
+      <Flex isColumn gap='medium' isSpaceBetween isFullHeight>
         <Flex isColumn isCenter>
           <MolkkyImg onClick={handleDebug} />
           <Flex isColumn gap='medium'>
-            {names.map((name, key) => (
-              <Flex key={key} gap='medium'>
-                <TextInput value={name} onChange={(v) => handleChangeName(key, v)} />
-                <Button icon={<MdDelete />} onClick={() => handleDeleteName(key)} />
+            <SortableList onSortEnd={onSortEnd}>
+              <Flex isColumn gap='small'>
+                {names.map((name, key) => (
+                  <SortableItem key={key}>
+                    <Flex gap='medium' isAlign>
+                      <SortableKnob>
+                        <MdOutlineDragIndicator />
+                      </SortableKnob>
+                      <TextInput value={name} onChange={(v) => handleChangeName(key, v)} />
+                      <Button icon={<MdDelete />} onClick={() => handleDeleteName(key)} />
+                    </Flex>
+                  </SortableItem>
+                ))}
               </Flex>
-            ))}
-            <Flex isCenter>
-              <Button icon={<IoAddSharp />} onClick={handleAddName} />
-            </Flex>
+            </SortableList>
+            <Button icon={<IoAddSharp />} onClick={handleAddName} />
           </Flex>
         </Flex>
         <Button color='green' label='Commencer' onClick={handleStart} />
