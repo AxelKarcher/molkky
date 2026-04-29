@@ -14,7 +14,8 @@ interface FlexProps {
   isSpaceAround?: boolean,
   isFullHeight?: boolean,
   isFullWidth?: boolean,
-  className?: string
+  className?: string,
+  onClick?: () => void
 }
 
 const GAP_VALUES = {
@@ -34,7 +35,8 @@ const Flex = ({
   isSpaceAround,
   isFullHeight,
   isFullWidth,
-  className
+  className,
+  onClick
 }: FlexProps) => (
   <div
     className={`
@@ -52,6 +54,7 @@ const Flex = ({
       gap: gap !== undefined ? typeof gap === 'number' ? gap : GAP_VALUES[gap] : 0,
       ...style
     }}
+    onClick={onClick}
   >
     {children}
   </div>

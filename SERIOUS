@@ -1,0 +1,2 @@
+- les "width-min: 0" et "height-min: 0" pour pas que ça déborde
+- le <Navigate /> qui fait comme navigate() mais ce dernier ne marche pas seul

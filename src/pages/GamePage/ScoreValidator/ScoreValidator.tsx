@@ -7,14 +7,20 @@ interface ScoreValidatorProps {
   currScore: number
   typedScore: string
   handleValidateScore: () => void
+  isDisabled: boolean
 }
 
-const ScoreValidator = ({ currScore, typedScore, handleValidateScore }: ScoreValidatorProps) => (
+const ScoreValidator = ({ currScore, isDisabled, typedScore, handleValidateScore }: ScoreValidatorProps) => (
   <Flex className='score-validator-container card' gap='medium' isColumn>
     <span id='curr-player-score'>{currScore}</span>
     <Flex isSpaceAround gap='medium'>
       <span id='typed-score'>{`${typedScore !== '' ? '+ ' : ''}${typedScore}`}</span>
-      <Button color='green' isDisabled={parseInt(typedScore) > 12} onClick={handleValidateScore} icon={<FaCheck />} />
+      <Button
+        color='green'
+        isDisabled={isDisabled || typedScore === '' || parseInt(typedScore) > 12}
+        onClick={handleValidateScore}
+        icon={<FaCheck />}
+      />
     </Flex>
   </Flex>
 )

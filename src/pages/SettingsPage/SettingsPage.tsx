@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import Flex from "../../components/Flex/Flex";
 import MolkkyImg from "../../components/MolkkyImg/MolkkyImg";
 
+const DEBUG_NAMES = ['Axel', 'Dorian', 'Simon', 'Gwen', 'Mace', 'Antoine', 'Lucas', 'Nicolas', 'Guillaume', 'Justine', 'Julien']
+
 const SettingsPage = () => {
 
   const navigate = useNavigate()
@@ -39,11 +41,15 @@ const SettingsPage = () => {
     navigate('/game', { state: names })
   }
 
+  const handleDebug = () => {
+    setNames(DEBUG_NAMES)
+  }
+
   return (
     <PageBase className='settings-page-container'>
       <Flex isColumn isSpaceBetween isFullHeight>
         <Flex isColumn isCenter>
-          <MolkkyImg />
+          <MolkkyImg onClick={handleDebug} />
           <Flex isColumn gap='medium'>
             {names.map((name, key) => (
               <Flex key={key} gap='medium'>

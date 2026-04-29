@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import './Button.scss'
 
 interface ButtonProps {
@@ -9,6 +9,7 @@ interface ButtonProps {
   isFullWidth?: boolean;
   isDisabled?: boolean;
   color?: 'red' | 'green';
+  style?: CSSProperties
 }
 
 const Button = ({
@@ -18,7 +19,8 @@ const Button = ({
   color,
   isFullWidth,
   isDisabled,
-  className
+  className,
+  style
 }: ButtonProps) => (
   <button
     className={`
@@ -31,7 +33,11 @@ const Button = ({
     `}
     onClick={onClick}
     disabled={isDisabled}
-    style={{ color: color, borderColor: color }}
+    style={{
+      color: isDisabled ? 'grey': color,
+      borderColor: isDisabled ? 'grey' : color,
+      ...style
+    }}
   >
     {icon && icon}
     {label && label}

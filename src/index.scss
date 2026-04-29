@@ -1,13 +1,6 @@
 :root {
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  background-image: url('../public/molkky_bg.jpg');
-  background-size: cover;
 
   // UI
   --radius: 10px;
@@ -21,6 +14,20 @@
   --fs-2: calc(12px + 3vw);
   --fs-1: calc(6px + 3vw);
   font-size: var(--fs-4);
+
+  @font-face {
+    font-family: 'Slow Home';
+    src: url('./assets/fonts/Slow\ Home.otf');
+  }
+  @font-face {
+    font-family: 'Maqui Hv';
+    src: url('./assets/fonts/Maqui\ Hv.otf');
+  }
+  font-family: 'Slow Home';
+  font-family: 'Maqui Hv';
+
+  background-image: url('../public/molkky_bg.jpg');
+  background-size: cover;
 
   .card {
     background-color: rgba(255, 255, 255, 0.5);

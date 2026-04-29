@@ -1,43 +1,15 @@
 import { useState } from 'react'
 import PageBase from '../../components/PageBase/PageBase'
-import { useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import './GamePage.scss'
 import Flex from '../../components/Flex/Flex';
 import NumericPad from './NumericPad/NumericPad';
 import PlayersList from './PlayersList/PlayersList';
-import type { GameState } from '../../types/types';
 import ScoreValidator from './ScoreValidator/ScoreValidator';
 import ErrorsValidator from './ErrorsValidator/ErrorsValidator';
 import MolkkyImg from '../../components/MolkkyImg/MolkkyImg';
-
-const buildGameState = (names: string[]): GameState => ({
-  players: names.map((name) => ({
-    score: 0,
-    scoreHistory: [],
-    errorsAmount: 0,
-    name,
-    wonPosition: null,
-    hasLost: false,
-    average: 0
-  })),
-  currPlayerIdx: 0
-})
-
-const calcAverage = (values: number[]): number => {
-  const sum: number = values.reduce((acc, curr) => acc + curr)
-
-  return Number((sum / values.length).toFixed(1).replace('.0', ''))
-}
-
-const getTargetText = (score: number): string => {
-  const target = 50 - score
-
-  if (target > 12) {
-    return '-'
-  }
-
-  return `${target.toString()} pts`
-}
+import type { GameState } from '../../types/gameState.type';
+import { buildGameState, calcAverage, determineNextPlayerIdx, getTargetText } from './gamePage.utils';
 
 const GamePage = () => {
 
@@ -45,7 +17,7 @@ const GamePage = () => {
   const names: string[] = location.state
 
   const [typedScore, setTypedScore] = useState('')
-  const [currWinPosition, setCurrWinPosition] = useState(1)
+  const [currWinPosition, setCurrWinPosition] = useState(0)
   const [gameState, setGameState] = useState<GameState>(() => {
     if (names?.length > 0) {
       return buildGameState(names)
@@ -53,6 +25,20 @@ const GamePage = () => {
 
     return { players: [], currPlayerIdx: 0 }
   })
+  const [isGameOver, setIsGameOver] = useState(false)
+
+  const goToNextPlayer = () => {
+    const newIdx = determineNextPlayerIdx(gameState)
+
+    if (newIdx === -1) {
+      setIsGameOver(true)
+      setGameState((old) => ({ ...old, currPlayerIdx: 0 }))
+    } else {
+      setGameState((old) => ({ ...old, currPlayerIdx: newIdx }))
+    }
+
+    setTypedScore('')
+  }
 
   const handleAddError = () => {
     const newGameState = { ...gameState }
@@ -65,15 +51,7 @@ const GamePage = () => {
     }
 
     setGameState(newGameState)
-  }
-
-  const goToNextPlayer = () => {
-    setGameState((old) => {
-      return {
-        ...old,
-        currPlayerIdx: (old.currPlayerIdx + 1) % old.players.length
-      }
-    })
+    goToNextPlayer()
   }
 
   const handleValidateScore = () => {
@@ -88,11 +66,10 @@ const GamePage = () => {
     if (currPlayer.score > 50) {
       currPlayer.score = 25
     } else if (currPlayer.score === 50) {
-      currPlayer.wonPosition = currWinPosition
+      currPlayer.winPosition = currWinPosition
       setCurrWinPosition((old) => old + 1)
     }
 
-    setTypedScore('')
     setGameState(newGameState)
 
     goToNextPlayer()
@@ -106,12 +83,16 @@ const GamePage = () => {
     }
   }
 
+  if (gameState.players.length < 2) {
+    return <Navigate to="/" replace />
+  }
+
   const currPlayer = gameState.players[gameState.currPlayerIdx]
 
   return (
     <PageBase className='game-base-container'>
       <MolkkyImg />
-      <Flex isColumn gap='medium' isSpaceBetween isFullHeight>
+      <Flex isColumn gap='medium' isSpaceBetween style={{ minHeight: 0}}>
         <Flex className='top-texts card' isColumn isCenter isAlign>
           <span id='curr-name'>{currPlayer.name}</span>
           <span>Moyenne: {currPlayer.average}</span>
@@ -120,10 +101,22 @@ const GamePage = () => {
         <PlayersList players={gameState.players} currName={currPlayer.name} />
         <Flex isSpaceBetween gap='medium'>
           <Flex isColumn isSpaceBetween isFullWidth gap='medium'>
-            <ErrorsValidator currErrorsAmount={currPlayer.errorsAmount} handleAddError={handleAddError} />
-            <ScoreValidator currScore={currPlayer.score} typedScore={typedScore} handleValidateScore={handleValidateScore} />
+            <ErrorsValidator
+              currErrorsAmount={currPlayer.errorsAmount}
+              handleAddError={handleAddError}
+              isDisabled={isGameOver}
+            />
+            <ScoreValidator
+              currScore={currPlayer.score}
+              typedScore={typedScore}
+              handleValidateScore={handleValidateScore}
+              isDisabled={isGameOver}
+            />
           </Flex>
-          <NumericPad onPressed={(e) => handlePadPressed(e)} areNumbersDisabled={typedScore.length === 2} />
+          <NumericPad
+            onPressed={(e) => handlePadPressed(e)}
+            areNumbersDisabled={isGameOver || typedScore.length === 2}
+          />
         </Flex>
       </Flex>
     </PageBase>

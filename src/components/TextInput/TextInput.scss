@@ -1,9 +1,9 @@
 .text-input-container {
   all: unset;
+  min-width: 0;
   background-color: white;
-  border: 4px solid black;
-  height: 50px;
-  box-sizing: border-box;
   border-radius: var(--radius);
+  border: 4px solid black;
   padding: 0 10px;
+  box-sizing: border-box;
 }

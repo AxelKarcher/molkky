@@ -1,5 +1,12 @@
 .players-list-container {
   font-size: var(--fs-2);
+  overflow: auto;
+
+  .grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+  }
 
   .curr-name {
     font-size: var(--fs-4);
@@ -8,7 +15,5 @@
 
   .lost { color: red; }
 
-  .list-cross {
-    font-size: var(--fs-1);
-  }
+  .list-cross { font-size: var(--fs-1); }
 }

@@ -3,12 +3,7 @@ export type Player = {
   scoreHistory: number[],
   errorsAmount: number;
   name: string;
-  wonPosition: number | null;
+  winPosition: number | null;
   average: number;
   hasLost: boolean;
-}
-
-export type GameState = {
-  players: Player[];
-  currPlayerIdx: number;
 }
