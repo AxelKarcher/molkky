@@ -1,0 +1,40 @@
+:root {
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-image: url('../public/molkky_bg.jpg');
+
+  // UI
+  --radius: 10px;
+  --gap: 14px;
+
+  // COLORS
+
+  // FONT SIZES
+  --fs-6: 12vw;
+  --fs-4: 8vw;
+  --fs-2: 4.5vw;
+
+  .bouncy {
+    cursor: pointer;
+    transition: scale 0.1s;
+
+    &:hover { scale: 1.05; }
+
+    &:active { scale: 0.95; }
+  }
+
+  .debug {
+    border: 2px solid red;
+    box-sizing: border-box;
+  }
+}
+
+#root { margin: 0 auto; }
+
+body { margin: 0; }
