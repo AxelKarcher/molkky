@@ -1,27 +1,14 @@
 import { useState } from 'react'
 import PageBase from '../../components/PageBase/PageBase'
 import { useLocation } from 'react-router-dom'
-import Button from '../../components/Button/Button';
-import { ImCross } from 'react-icons/im';
-import { FaCheck } from 'react-icons/fa';
 import './GamePage.scss'
 import Flex from '../../components/Flex/Flex';
 import NumericPad from './NumericPad/NumericPad';
-
-type Player = {
-  score: number;
-  scoreHistory: number[],
-  errorsAmount: number;
-  name: string;
-  wonPosition: number | null;
-  average: number;
-  hasLost: boolean;
-}
-
-type GameState = {
-  players: Player[];
-  currPlayerIdx: number;
-}
+import PlayersList from './PlayersList/PlayersList';
+import type { GameState } from '../../types/types';
+import ScoreValidator from './ScoreValidator/ScoreValidator';
+import ErrorsValidator from './ErrorsValidator/ErrorsValidator';
+import MolkkyImg from '../../components/MolkkyImg/MolkkyImg';
 
 const buildGameState = (names: string[]): GameState => ({
   players: names.map((name) => ({
@@ -123,42 +110,18 @@ const GamePage = () => {
 
   return (
     <PageBase className='game-base-container'>
+      <MolkkyImg />
       <Flex isColumn gap='medium' isSpaceBetween isFullHeight>
-        <Flex className='top-texts' isColumn isCenter>
+        <Flex className='top-texts card' isColumn isCenter isAlign>
           <span id='curr-name'>{currPlayer.name}</span>
           <span>Moyenne: {currPlayer.average}</span>
           <span>Target: {getTargetText(currPlayer.score)}</span>
         </Flex>
-        <Flex isSpaceBetween>
-          <Flex isCenter>
-            {Array(currPlayer.errorsAmount).fill('').map((_, key) => (
-              <ImCross key={key} color='red' />
-            ))}
-            {currPlayer.errorsAmount < 3 && (
-              <Button isRed icon={<ImCross />} onClick={handleAddError} />
-            )}
-          </Flex>
-          <Flex isColumn gap='medium'>
-            <span id='curr-player-score'>{currPlayer.score}</span>
-            <Flex gap='medium'>
-              <span id='typed-score'>{typedScore}</span>
-              <Button isGreen isDisabled={parseInt(typedScore) > 12} onClick={handleValidateScore} icon={<FaCheck  />} />
-            </Flex>
-          </Flex>
-        </Flex>
-        <Flex isSpaceBetween>
-          <Flex isColumn gap='medium'>
-            {gameState.players.map(({ name, score, errorsAmount }, key) => (
-              <Flex key={key} gap='medium'>
-                <span className={`little-name ${name === currPlayer.name && 'bold'}`}>{name}</span>
-                <span>{score}</span>
-                <span>
-                  {Array(errorsAmount).fill('').map((_, key) => (
-                    <ImCross key={key} color='red' />
-                  ))}
-                </span>
-              </Flex>
-            ))}
+        <PlayersList players={gameState.players} currName={currPlayer.name} />
+        <Flex isSpaceBetween gap='medium'>
+          <Flex isColumn isSpaceBetween isFullWidth gap='medium'>
+            <ErrorsValidator currErrorsAmount={currPlayer.errorsAmount} handleAddError={handleAddError} />
+            <ScoreValidator currScore={currPlayer.score} typedScore={typedScore} handleValidateScore={handleValidateScore} />
           </Flex>
           <NumericPad onPressed={(e) => handlePadPressed(e)} areNumbersDisabled={typedScore.length === 2} />
         </Flex>

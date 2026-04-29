@@ -8,10 +8,12 @@ interface FlexProps {
   style?: CSSProperties,
   gap?: Gap,
   isCenter?: boolean,
+  isAlign?: boolean,
   isColumn?: boolean,
   isSpaceBetween?: boolean,
   isSpaceAround?: boolean,
   isFullHeight?: boolean,
+  isFullWidth?: boolean,
   className?: string
 }
 
@@ -26,21 +28,24 @@ const Flex = ({
   style,
   gap,
   isCenter,
+  isAlign,
   isColumn,
   isSpaceBetween,
   isSpaceAround,
   isFullHeight,
+  isFullWidth,
   className
 }: FlexProps) => (
   <div
     className={`
       flex-container
-      ${(isCenter && isColumn) && 'center-col'}
-      ${(isCenter && !isColumn) && 'center-row'}
+      ${isCenter && 'center'}
+      ${isAlign && 'align'}
       ${isColumn && 'column'}
       ${isSpaceAround && 'space-around'}
       ${isSpaceBetween && 'space-between'}
       ${isFullHeight && 'full-height'}
+      ${isFullWidth && 'full-width'}
       ${className ?? ''}
     `}
     style={{

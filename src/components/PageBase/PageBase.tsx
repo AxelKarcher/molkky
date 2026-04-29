@@ -1,15 +1,17 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import './PageBase.scss'
+import Flex from '../Flex/Flex'
 
 interface PageBaseProps {
-  children: ReactNode;
-  className?: string;
+  children: ReactNode
+  className?: string
+  style?: CSSProperties
 }
 
-const PageBase = ({ children, className }: PageBaseProps) => (
-  <div className={`page-base-container ${className ?? ''}`}>
+const PageBase = ({ children, className, style }: PageBaseProps) => (
+  <Flex isColumn className={`page-base-container ${className ?? ''}`} style={{ ...style }}>
     {children}
-  </div>
+  </Flex>
 )
 
 export default PageBase

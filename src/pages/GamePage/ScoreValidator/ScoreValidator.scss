@@ -1,0 +1,15 @@
+.score-validator-container {
+
+  #curr-player-score {
+    align-self: center;
+    font-size: var(--fs-6);
+  }
+
+  #typed-score {
+    font-size: var(--fs-4);
+    width: 17vw;
+    align-self: flex-end;
+    border-bottom: 2px solid black;
+    box-sizing: border-box;
+  }
+}

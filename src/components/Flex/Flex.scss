@@ -1,9 +1,9 @@
 .flex-container {
   display: flex;
 
-  &.center-col { align-items: center; }
+  &.align { align-items: center; }
 
-  &.center-row { justify-content: center; }
+  &.center { justify-content: center; }
 
   &.column { flex-direction: column; }
 
@@ -11,5 +11,7 @@
 
   &.space-between { justify-content: space-between; }
 
-  &.full-height { height: 100%; }
+  &.full-height { flex: 1; }
+
+  &.full-width { width: 100%; }
 }

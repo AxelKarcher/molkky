@@ -2,12 +2,12 @@ import Button from "../../components/Button/Button"
 import { IoAddSharp } from "react-icons/io5";
 import PageBase from "../../components/PageBase/PageBase";
 import TextInput from "../../components/TextInput/TextInput";
-import molkkyIcon from '../../assets/molkky.png'
 import './SettingsPage.scss'
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Flex from "../../components/Flex/Flex";
+import MolkkyImg from "../../components/MolkkyImg/MolkkyImg";
 
 const SettingsPage = () => {
 
@@ -43,7 +43,7 @@ const SettingsPage = () => {
     <PageBase className='settings-page-container'>
       <Flex isColumn isSpaceBetween isFullHeight>
         <Flex isColumn isCenter>
-          <img id='molkky-icon' src={molkkyIcon} />
+          <MolkkyImg />
           <Flex isColumn gap='medium'>
             {names.map((name, key) => (
               <Flex key={key} gap='medium'>
@@ -56,7 +56,7 @@ const SettingsPage = () => {
             </Flex>
           </Flex>
         </Flex>
-        <Button isGreen label='Commencer' onClick={handleStart} />
+        <Button color='green' label='Commencer' onClick={handleStart} />
       </Flex>
     </PageBase>
   )
