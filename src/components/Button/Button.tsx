@@ -29,6 +29,7 @@ const Button = ({
       ${isFullWidth && 'full-width'}
       ${isDisabled && 'disabled'}
       ${isDisabled ? '' : 'bouncy'}
+      ${icon ? 'with-icon' : ''}
       ${className ?? ''}
     `}
     onClick={onClick}

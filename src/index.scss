@@ -4,7 +4,8 @@
 
   // UI
   --radius: 10px;
-  --gap: 14px;
+  --gap: 12px;
+  --height-1: 45px;
 
   // COLORS
 
@@ -16,14 +17,9 @@
   font-size: var(--fs-4);
 
   @font-face {
-    font-family: 'Slow Home';
-    src: url('./assets/fonts/Slow\ Home.otf');
-  }
-  @font-face {
     font-family: 'Maqui Hv';
     src: url('./assets/fonts/Maqui\ Hv.otf');
   }
-  font-family: 'Slow Home';
   font-family: 'Maqui Hv';
 
   background-image: url('../public/molkky_bg.jpg');
@@ -32,19 +28,21 @@
   .card {
     background-color: rgba(255, 255, 255, 0.5);
     border-bottom: 6px solid lightgray;
-    box-sizing: border-box;
     border-radius: var(--radius);
     padding: calc(var(--gap) / 2);
     box-shadow: 0 0 5px lightgray;
+    box-sizing: border-box;
+
+    &.no-padding { padding: 0; }
   }
 
   .bouncy {
     cursor: pointer;
     transition: scale 0.1s;
 
-    &:hover { scale: 1.05; }
+    &:hover { scale: 1.02; }
 
-    &:active { scale: 0.95; }
+    &:active { scale: 0.98; }
   }
 
   .debugA {
@@ -61,10 +59,30 @@
     border: 2px solid blue;
     box-sizing: border-box;
   }
+
+  .scroll-area {
+    overflow: auto;
+    padding: var(--gap);
+    box-sizing: border-box;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE / Edge legacy */
+    &::-webkit-scrollbar { display: none; } /* Chrome / Safari */
+  }
 }
 
 html, body, #root {
   height: 100%;
   margin: 0;
   -webkit-tap-highlight-color: transparent;
+
+  scrollbar-width: none;
+
+  /* IE / Edge legacy */
+  -ms-overflow-style: none;
+
+  /* Chrome / Safari */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }

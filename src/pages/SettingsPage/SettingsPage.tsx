@@ -1,16 +1,14 @@
 import Button from "../../components/Button/Button"
 import { IoAddSharp } from "react-icons/io5";
 import PageBase from "../../components/PageBase/PageBase";
-import TextInput from "../../components/TextInput/TextInput";
 import './SettingsPage.scss'
 import { useState } from "react";
-import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Flex from "../../components/Flex/Flex";
 import MolkkyImg from "../../components/MolkkyImg/MolkkyImg";
-import SortableList, { SortableItem, SortableKnob } from "react-easy-sort";
+import SortableList from "react-easy-sort";
 import { arrayMoveImmutable } from 'array-move'
-import { MdOutlineDragIndicator } from "react-icons/md";
+import PlayerNameItem from "./PlayerNameItem/PlayerNameItem";
 
 const DEBUG_NAMES = ['Axel', 'Dorian', 'Simon', 'Gwen', 'Mace', 'Antoine', 'Lucas', 'Nicolas', 'Guillaume', 'Justine', 'Julien']
 
@@ -20,7 +18,7 @@ const SettingsPage = () => {
 
   const [names, setNames] = useState<string[]>([])
 
-  const handleAddName =() => {
+  const handleAddName = () => {
     setNames((old) => [...old, ''])
   }
 
@@ -55,28 +53,27 @@ const SettingsPage = () => {
   return (
     <PageBase className='settings-page-container'>
       <Flex isColumn gap='medium' isSpaceBetween isFullHeight>
-        <Flex isColumn isCenter>
+        <Flex isColumn isCenter isMinHeight isFlexStart isFullHeight>
           <MolkkyImg onClick={handleDebug} />
-          <Flex isColumn gap='medium'>
-            <SortableList onSortEnd={onSortEnd}>
-              <Flex isColumn gap='small'>
+          <SortableList onSortEnd={onSortEnd} className='players-sortable-list'>
+            <Flex isColumn className='card no-padding' isMinHeight isFullHeight>
+              <Flex isColumn gap='small' className='scroll-area'>
                 {names.map((name, key) => (
-                  <SortableItem key={key}>
-                    <Flex gap='medium' isAlign>
-                      <SortableKnob>
-                        <MdOutlineDragIndicator />
-                      </SortableKnob>
-                      <TextInput value={name} onChange={(v) => handleChangeName(key, v)} />
-                      <Button icon={<MdDelete />} onClick={() => handleDeleteName(key)} />
-                    </Flex>
-                  </SortableItem>
+                  <PlayerNameItem
+                    key={key}
+                    name={name}
+                    onNameChange={(v) => handleChangeName(key, v)}
+                    onDeleteClick={() => handleDeleteName(key)}
+                  />
                 ))}
               </Flex>
-            </SortableList>
-            <Button icon={<IoAddSharp />} onClick={handleAddName} />
-          </Flex>
+            </Flex>
+          </SortableList>
         </Flex>
-        <Button color='green' label='Commencer' onClick={handleStart} />
+        <Flex gap='medium'>
+          <Button isFullWidth color='green' label='Commencer' onClick={handleStart} />
+          <Button isFullWidth icon={<IoAddSharp />} onClick={handleAddName} />
+        </Flex>
       </Flex>
     </PageBase>
   )

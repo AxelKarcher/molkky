@@ -15,7 +15,9 @@ interface FlexProps {
   isSpaceAround?: boolean,
   isFullHeight?: boolean,
   isFullWidth?: boolean,
+  isFlexStart?: boolean,
   className?: string,
+  isMinHeight?: boolean,
   onClick?: () => void
 }
 
@@ -39,6 +41,8 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
       isFullHeight,
       isFullWidth,
       className,
+      isFlexStart,
+      isMinHeight,
       onClick
     },
     ref
@@ -54,6 +58,8 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
         ${isSpaceBetween && 'space-between'}
         ${isFullHeight && 'full-height'}
         ${isFullWidth && 'full-width'}
+        ${isMinHeight && 'min-height'}
+        ${isFlexStart && 'flex-start'}
         ${className ?? ''}
       `}
       style={{

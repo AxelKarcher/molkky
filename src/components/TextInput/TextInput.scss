@@ -1,6 +1,7 @@
 .text-input-container {
   all: unset;
   min-width: 0;
+  height: var(--height-1);
   background-color: white;
   border-radius: var(--radius);
   border: 4px solid black;

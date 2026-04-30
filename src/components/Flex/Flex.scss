@@ -11,7 +11,11 @@
 
   &.space-between { justify-content: space-between; }
 
-  &.full-height { flex: 1; }
+  &.full-height { height: 100% }
 
   &.full-width { width: 100%; }
+
+  &.min-height { min-height: 0; }
+
+  &.flex-start { justify-content: flex-start; }
 }

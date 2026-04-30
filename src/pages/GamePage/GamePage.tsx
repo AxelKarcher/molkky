@@ -88,13 +88,14 @@ const GamePage = () => {
   }
 
   const currPlayer = gameState.players[gameState.currPlayerIdx]
+  const currNameText = currPlayer.name === '' ? `Joueur ${gameState.currPlayerIdx + 1}` : currPlayer.name
 
   return (
     <PageBase className='game-base-container'>
       <MolkkyImg />
       <Flex isColumn gap='medium' isSpaceBetween style={{ minHeight: 0}} isFullHeight>
         <Flex className='top-texts card' isColumn isCenter isAlign>
-          <span id='curr-name'>{currPlayer.name}</span>
+          <span id='curr-name'>{currNameText}</span>
           <span>Moyenne: {currPlayer.average}</span>
           <span>Target: {getTargetText(currPlayer.score)}</span>
         </Flex>
