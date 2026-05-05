@@ -1,5 +1,13 @@
 .page-base-container {
+  position: relative;
   height: 100%;
   padding: var(--gap);
   box-sizing: border-box;
+
+  .version-text {
+    position: absolute;
+    top: var(--gap);
+    left: var(--gap);
+    font-size: 12px;
+  }
 }

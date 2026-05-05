@@ -23,7 +23,7 @@ const SettingsPage = () => {
     if (isGameStored()) {
       navigate('/game')
     }
-  }, [])
+  }, [navigate])
 
   const handleAddName = () => {
     setNames((old) => [...old, ''])
