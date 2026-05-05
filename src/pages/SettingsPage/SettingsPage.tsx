@@ -2,13 +2,14 @@ import Button from "../../components/Button/Button"
 import { IoAddSharp } from "react-icons/io5";
 import PageBase from "../../components/PageBase/PageBase";
 import './SettingsPage.scss'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Flex from "../../components/Flex/Flex";
 import MolkkyImg from "../../components/MolkkyImg/MolkkyImg";
 import SortableList from "react-easy-sort";
 import { arrayMoveImmutable } from 'array-move'
 import PlayerNameItem from "./PlayerNameItem/PlayerNameItem";
+import { isGameStored } from "../../utils/storageManager.utils";
 
 const DEBUG_NAMES = ['Axel', 'Dorian', 'Simon', 'Gwen', 'Mace', 'Antoine', 'Lucas', 'Nicolas', 'Guillaume', 'Justine', 'Julien']
 
@@ -17,6 +18,12 @@ const SettingsPage = () => {
   const navigate = useNavigate()
 
   const [names, setNames] = useState<string[]>([])
+
+  useEffect(() => {
+    if (isGameStored()) {
+      navigate('/game')
+    }
+  }, [])
 
   const handleAddName = () => {
     setNames((old) => [...old, ''])
@@ -50,6 +57,8 @@ const SettingsPage = () => {
     setNames((old) => arrayMoveImmutable(old, oldIndex, newIndex))
   }
 
+  const isStartDisabled = names.length < 2
+
   return (
     <PageBase className='settings-page-container'>
       <Flex isColumn gap='medium' isSpaceBetween isFullHeight>
@@ -71,7 +80,7 @@ const SettingsPage = () => {
           </SortableList>
         </Flex>
         <Flex gap='medium'>
-          <Button isFullWidth color='green' label='Commencer' onClick={handleStart} />
+          <Button isFullWidth color='green' isDisabled={isStartDisabled} label='Commencer' onClick={handleStart} />
           <Button isFullWidth icon={<IoAddSharp />} onClick={handleAddName} />
         </Flex>
       </Flex>

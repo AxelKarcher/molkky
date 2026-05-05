@@ -1,11 +1,11 @@
 import type { GameState } from "../../types/gameState.type"
 
 export const buildGameState = (names: string[]): GameState => ({
-  players: names.map((name) => ({
+  players: names.map((name, idx) => ({
     score: 0,
     scoreHistory: [],
     errorsAmount: 0,
-    name,
+    name: name !== '' ? name : `Joueur ${idx + 1}`,
     winPosition: null,
     hasLost: false,
     average: 0

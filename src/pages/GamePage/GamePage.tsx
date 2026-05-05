@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PageBase from '../../components/PageBase/PageBase'
-import { Navigate, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import './GamePage.scss'
 import Flex from '../../components/Flex/Flex';
 import NumericPad from './NumericPad/NumericPad';
@@ -10,8 +10,14 @@ import ErrorsValidator from './ErrorsValidator/ErrorsValidator';
 import MolkkyImg from '../../components/MolkkyImg/MolkkyImg';
 import type { GameState } from '../../types/gameState.type';
 import { buildGameState, calcAverage, determineNextPlayerIdx, getTargetText } from './gamePage.utils';
+import { IoClose } from "react-icons/io5";
+import ModalBase from '../../components/ModalBase/ModalBase';
+import Button from '../../components/Button/Button';
+import { deleteStoredGame, getStoredGame, isGameStored, updateStoredGame } from '../../utils/storageManager.utils';
 
 const GamePage = () => {
+
+  const navigate = useNavigate()
 
   const location = useLocation()
   const names: string[] = location.state
@@ -19,28 +25,45 @@ const GamePage = () => {
   const [typedScore, setTypedScore] = useState('')
   const [currWinPosition, setCurrWinPosition] = useState(0)
   const [gameState, setGameState] = useState<GameState>(() => {
-    if (names?.length > 0) {
-      return buildGameState(names)
+    if (isGameStored()) {
+      return getStoredGame()
     }
-
-    return { players: [], currPlayerIdx: 0 }
+    return (!names || names?.length < 2) ? { players: [], currPlayerIdx: -1 } : buildGameState(names)
   })
   const [isGameOver, setIsGameOver] = useState(false)
+  const [isCloseRequest, setIsCloseRequest] = useState(false)
+
+  useEffect(() => {
+    if (gameState && gameState.currPlayerIdx === -1) {
+      deleteStoredGame()
+      navigate('/')
+    }
+
+    updateStoredGame(gameState)
+  }, [gameState, navigate])
 
   const goToNextPlayer = () => {
+    if (!gameState) {
+      return
+    }
+
     const newIdx = determineNextPlayerIdx(gameState)
 
     if (newIdx === -1) {
       setIsGameOver(true)
-      setGameState((old) => ({ ...old, currPlayerIdx: 0 }))
+      setGameState((old) => old ? ({ ...old, currPlayerIdx: 0 }) : old)
     } else {
-      setGameState((old) => ({ ...old, currPlayerIdx: newIdx }))
+      setGameState((old) => old ? ({ ...old, currPlayerIdx: newIdx }) : old)
     }
 
     setTypedScore('')
   }
 
   const handleAddError = () => {
+    if (!gameState) {
+      return
+    }
+
     const newGameState = { ...gameState }
     const currPlayer = newGameState.players[newGameState.currPlayerIdx]
 
@@ -55,6 +78,10 @@ const GamePage = () => {
   }
 
   const handleValidateScore = () => {
+    if (!gameState) {
+      return
+    }
+
     const newGameState = { ...gameState }
     const pointsToAdd = parseInt(typedScore)
     const currPlayer = newGameState.players[newGameState.currPlayerIdx]
@@ -83,19 +110,30 @@ const GamePage = () => {
     }
   }
 
-  if (gameState.players.length < 2) {
-    return <Navigate to="/" replace />
+  const handleCloseModal = () => {
+    setIsCloseRequest(false)
+  }
+
+  const handleConfirmClose = () => {
+    deleteStoredGame()
+    navigate('/')
   }
 
   const currPlayer = gameState.players[gameState.currPlayerIdx]
-  const currNameText = currPlayer.name === '' ? `Joueur ${gameState.currPlayerIdx + 1}` : currPlayer.name
 
   return (
     <PageBase className='game-base-container'>
+      <ModalBase isOpen={isCloseRequest} handleClose={handleCloseModal} title='Fermer la partie ?'>
+        <Flex isSpaceAround>
+          <Button label='Non' onClick={handleCloseModal} />
+          <Button label='Oui' color='red' onClick={handleConfirmClose} />
+        </Flex>
+      </ModalBase>
       <MolkkyImg />
+      <IoClose className='close-icon' onClick={() => setIsCloseRequest(true)} />
       <Flex isColumn gap='medium' isSpaceBetween style={{ minHeight: 0}} isFullHeight>
         <Flex className='top-texts card' isColumn isCenter isAlign>
-          <span id='curr-name'>{currNameText}</span>
+          <span id='curr-name'>{currPlayer.name}</span>
           <span>Moyenne: {currPlayer.average}</span>
           <span>Target: {getTargetText(currPlayer.score)}</span>
         </Flex>

@@ -1,4 +1,11 @@
 .game-base-container {
+  position: relative;
+
+  .close-icon {
+    position: absolute;
+    top: var(--gap);
+    right: var(--gap);
+  }
 
   .top-texts {
     font-size: var(--fs-2);

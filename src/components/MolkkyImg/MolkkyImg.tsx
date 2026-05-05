@@ -1,4 +1,4 @@
-import molkkyIcon from '../../assets/molkky.png'
+import molkkyIcon from '../../assets/images/molkky.png'
 import Flex from '../Flex/Flex'
 import './MolkkyImg.scss'
 
