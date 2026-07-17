@@ -1,6 +1,0 @@
-- les "width-min: 0" et "height-min: 0" pour pas que ça déborde
-- le <Navigate /> qui fait comme navigate() mais ce dernier ne marche pas seul
-- "-webkit-tap-highlight-color: transparent;" pour enlever l'effet bleu dégueu sur téléphone
-- pour react easy sort, l'élément le CHILD de SortableItem doit pouvoir accueillir une ref
-- lancer et build avec vite (depuis 2026): npm run dev et npm run build (plus de "vite ou vite build")
-- localStorage.getItem() peut toujours renvoyer null, à prendre en compte
