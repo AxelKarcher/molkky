@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm version patch --no-git-tag-version && tsc -b && vite build",
+    "build-deploy": "tsc -b && vite build && firebase deploy",
+    "release:patch": "npm version patch --no-git-tag-version && npm run build-deploy",
+    "release:minor": "npm version minor --no-git-tag-version && npm run build-deploy",
+    "release:major": "npm version major --no-git-tag-version && npm run build-deploy",
     "lint": "eslint .",
     "preview": "vite preview"
   },
